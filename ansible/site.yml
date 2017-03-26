@@ -1,0 +1,6 @@
+---
+- include: wakeonlan.yml
+- include: collect.yml
+- include: software.yml
+- include: desktop.yml
+- include: users.yml

@@ -1,0 +1,76 @@
+- hosts: all
+  strategy: free
+  tasks:
+  - name: Install chocolatey on new systems
+    raw: 'iex ((new-object net.webclient).DownloadString("https://chocolatey.org/install.ps1"))'
+    when: ansible_env.ChocolateyInstall is undefined
+    tags: software
+
+#  - name: Install powershell on new systems
+#    win_chocolatey:
+#      name: '{{ item }}'
+#      state: present
+#    when: ansible_env.ChocolateyInstall is undefined
+#    with_items:
+#    - powershell
+#    - pswindowsupdate
+
+  - name: Install extra software
+    win_chocolatey:
+      name: '{{ item }}'
+      state: present
+      upgrade: yes
+    with_items:
+    - 7zip
+    - audacity
+    - cdex
+    - chocolateygui
+    - firefox
+    - freerdp
+    - gimp
+    - googlechrome
+#    - googleearth
+    - infrarecorder
+    - inkscape
+    - keepass.install
+    - libreoffice
+    - notepadplusplus
+#    - rdpwrap
+    - sysinternals
+    - tipp10
+    - vlc
+    - windirstat
+    - adblockplus-firefox
+    - adblockplusie
+    - adblockpluschrome
+    tags: software
+
+  - name: Install/remove java
+    win_chocolatey:
+      name: '{{ item }}'
+      state: '{{ "present" if inventory_hostname in groups["administratie"] else "absent" }}'
+    with_items:
+    - javaruntime-preventasktoolbar
+    - jre8
+
+- hosts: computer26:computer41:computer48
+  tasks:
+  - name: Install dropbox
+    win_chocolatey:
+      name: dropbox
+      state: present
+  tags: dropbox
+
+- hosts: computerlokaal
+  tasks:
+  - name: Remove software
+    raw: $app = Get-WmiObject -Class Win32_Product -Filter "Name = '{{ item }}'"; $app.Uninstall();
+    with_items:
+    - Adobe AIR
+    - Acrobat Reader X
+    - Lenovo Solution Center
+    - SDK Debuggers
+
+  - name: Install Windows updates
+    win_updates:
+      state: installed

@@ -1,0 +1,5 @@
+- name: Create a new group
+  win_group:
+    name: local
+    description: Local group
+    state: present

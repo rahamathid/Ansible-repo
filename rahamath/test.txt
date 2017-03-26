@@ -1,0 +1,15 @@
+- hosts: windows
+  tasks:
+  - name: create group
+    win_group:
+      name: test
+      description: test
+      status: present
+  - name: Set time zone
+    win_timezone:
+     timezone: "Central Standard Time"
+  - name : Install IIS
+    win_feature:
+     name: web-server
+     status: present
+     restart: true

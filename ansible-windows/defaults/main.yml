@@ -1,0 +1,9 @@
+windows_enabled: yes                       # Enable module
+
+#ansible_ssh_user: vagrant
+#ansible_ssh_pass: vagrant
+#target port
+#ansible_ssh_port: 5986
+#local port
+#ansible_ssh_port: 55985
+ansible_connection: winrm

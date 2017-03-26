@@ -1,0 +1,15 @@
+{% for grp in groups %}
+[{{grp}}]
+{% for host in groups[grp] %}
+{% if grp == 'all' %}
+{% if hostvars[host]['ansible_connection'] == 'winrm' %}
+{{host}} ansible_connection=winrm ansible_host={{hostvars[host]['ansible_host']}} ansible_port={{hostvars[host]['ansible_port']}} ansible_user={{hostvars[host]['ansible_user']}} ansible_password={{hostvars[host]['ansible_password']|quote}} ansible_winrm_server_cert_validation=ignore
+{% endif %}
+{% else %}
+{% if hostvars[host]['ansible_connection'] == 'winrm' %}
+{{host}}
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% endfor %}
